@@ -3,103 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Propina Simple</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Fuente Roboto Mono -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-    <!-- Enlace al archivo CSS -->
-    <link rel="stylesheet" href="style.css">
+    <title>Calculadora de Propina</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="animated-bg flex items-center justify-center min-h-screen p-4">
-
-    <!-- Contenedor principal -->
-    <div class="w-full max-w-4xl bg-gray-700 rounded-xl shadow-2xl border border-gray-600 md:flex md:min-h-[400px] z-10">
+<body>
+    <div class="container">
+        <header>
+            <h1>Calculadora de Propina</h1>
+        </header>
         
-        <!-- Panel Izquierdo -->
-        <div class="p-8 md:w-1/2 bg-[#191919] rounded-t-xl md:rounded-l-xl md:rounded-tr-none">
-            <h1 class="text-3xl font-extrabold text-white mb-4 text-center">Calculadora de Propina</h1>
-            <p class="text-gray-400 mb-8 text-center">Ingresa el monto de la cuenta.</p>
-
-            <form id="tipForm" class="space-y-6">
-                <div>
-                    <label for="amount" class="block text-sm font-medium text-gray-300 mb-2">
-                        Monto Fijo (Total de la cuenta):
-                    </label>
-                    <div class="relative mt-1 rounded-lg shadow-sm">
-                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                            <span class="text-gray-400 sm:text-sm">$</span>
-                        </div>
-                        <input
-                            type="number"
-                            id="amount"
-                            step="0.01"
-                            min="0"
-                            placeholder="Ej. 100.00"
-                            required
-                            class="block w-full rounded-lg border-gray-600 bg-gray-800 text-white pl-7 pr-12 py-3 text-lg focus:ring-gray-500 focus:border-gray-500 transition duration-150 ease-in-out border"
-                        >
+        <main>
+            <div class="calculator">
+                <form id="tipForm">
+                    <div class="form-group">
+                        <label for="amount">Monto de la cuenta ($):</label>
+                        <input type="number" id="amount" name="amount" min="0" step="0.01" required>
                     </div>
+                    
+                    <div class="result-section">
+                        <h2>Detalle del cálculo:</h2>
+                        <div class="calculation-details">
+                            <p>Monto original: $<span id="originalAmount">0.00</span></p>
+                            <p>Impuesto (10%): $<span id="taxAmount">0.00</span></p>
+                            <p class="total">Total a pagar: $<span id="totalAmount">0.00</span></p>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="payButton" class="pay-btn">Pagar</button>
+                </form>
+                
+                <div id="thankYouMessage" class="thank-you hidden">
+                    <h2>¡Gracias por su pago!</h2>
+                    <p>Su transacción ha sido procesada exitosamente.</p>
                 </div>
-
-                <div id="buttonContainer" class="space-y-4">
-                    <!-- Botón Calcular -->
-                    <button
-                        type="button"
-                        id="calculateButton"
-                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-medium text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out transform hover:scale-[1.01] hover:shadow-xl focus:ring-offset-gray-900"
-                    >
-                        Calcular Propina
-                    </button>
-
-                    <!-- Botón Pagar -->
-                    <button
-                        type="button"
-                        id="payButton"
-                        style="display: none;" 
-                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-medium text-white bg-cyan-600 hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition duration-150 ease-in-out transform hover:scale-[1.01] hover:shadow-xl focus:ring-offset-gray-900"
-                    >
-                        Pagar Total
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Panel Derecho -->
-        <div id="displayPanel" class="p-8 md:w-1/2 flex items-center justify-center bg-gray-700 rounded-b-xl md:rounded-r-xl md:rounded-bl-none">
-            <div id="resultContainer" class="w-full text-center">
-                <p class="text-gray-300 text-lg">
-                    Los detalles de la transacción aparecerán aquí después del cálculo.
-                </p>
-                <p class="text-xs text-gray-500 mt-2">(Propina Fija: 10%)</p>
             </div>
-        </div>
+        </main>
+        
+        <footer>
+            <p>Proyecto desarrollado para Unidad Educativa Montepiedra</p>
+        </footer>
     </div>
     
-    <!-- Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50 hidden" onclick="hideSuccessModal()">
-        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm w-full border border-gray-700 transform transition-all duration-300 scale-95 opacity-0" id="modalContent" onclick="event.stopPropagation()">
-            <div class="text-center">
-                <svg class="mx-auto h-12 w-12 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <h3 class="mt-4 text-2xl leading-6 font-extrabold text-white">¡Pago Exitoso!</h3>
-                <p class="mt-2 text-sm text-gray-300">
-                    Tu transacción ha sido procesada correctamente y la propina ha sido incluida. ¡Gracias!
-                </p>
-                <div class="mt-5">
-                    <button type="button" onclick="hideSuccessModal()" class="inline-flex justify-center w-full rounded-lg border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:text-lg transition duration-150 ease-in-out">
-                        Cerrar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Enlace al JS -->
     <script src="script.js"></script>
 </body>
 </html>
